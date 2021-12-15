@@ -1,0 +1,38 @@
+{
+    "name": "skycoder/invoice-number-generator",
+    "description": "More flexible and unique invoice number generator",
+    "license": "MIT",
+    "keywords": [
+        "invoice-number-generator",
+        "asmakash",
+        "akashcsem",
+        "skycoder"
+    ],
+    "authors": [
+        {
+            "name": "Skycoder",
+            "email": "akashcseuu026@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Skycoder\\InvoiceNumberGenerator\\": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.x-dev"
+        },
+        "laravel": {
+            "providers": [
+                "Skycoder\\InvoiceNumberGenerator\\InvoiceNumberGeneratorServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "readme": "./readme.md",
+    "time": "2021-12-16",
+    "require": {
+        "php": "^7.2.5"
+    }
+}
