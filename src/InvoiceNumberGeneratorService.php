@@ -7,7 +7,7 @@ use Skycoder\InvoiceNumberGenerator\Models\InvoiceNumber;
 class InvoiceNumberGeneratorService
 {
     private $year = '';
-    private $prefix = 'inv-';
+    private $prefix = 'inv';
     private $company_id = null;
     private $start_at = 600000;
     private $invoice_no;
@@ -22,7 +22,7 @@ class InvoiceNumberGeneratorService
 
     public function prefix($prefix)
     {
-        $this->prefix = $prefix . '-';
+        $this->prefix = $prefix;
 
         return $this;
     }
