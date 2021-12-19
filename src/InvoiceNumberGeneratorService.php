@@ -7,10 +7,12 @@ use Skycoder\InvoiceNumberGenerator\Models\InvoiceNumber;
 class InvoiceNumberGeneratorService
 {
     private $year = '';
+    private $invoice_no;
+    private $others = '';
     private $prefix = 'inv';
+    private $buyer_id = null;
     private $company_id = null;
     private $start_at = 600000;
-    private $invoice_no;
 
 
     public function currentYear()
@@ -33,6 +35,22 @@ class InvoiceNumberGeneratorService
 
         return $this;
     }
+    
+
+    public function setBuyerId($buyer_id)
+    {
+        $this->buyer_id = $buyer_id;
+
+        return $this;
+    }
+    
+
+    public function setOthers($others)
+    {
+        $this->others = $others;
+
+        return $this;
+    }
 
     public function startAt($limit)
     {
@@ -43,28 +61,7 @@ class InvoiceNumberGeneratorService
 
     public function getInvoiceNumber($invoice_type)
     {
-
-        $this->invoice_no = InvoiceNumber::query()
-                    ->where('type', $invoice_type)
-                    ->when($this->year != '', function($q) {
-                        $q->where('year', $this->year);
-                    })
-                    ->when($this->company_id != null, function($q) {
-                        $q->where('company_id', $this->company_id);
-                    })
-                    ->first();
-
-        if (!optional($this->invoice_no)->next_id) {
-
-            $this->invoice_no = InvoiceNumber::create([
-
-                    'type'          => $invoice_type,
-                    'year'          => $this->year,
-                    'company_id'    => $this->company_id,
-                    'next_id'       => $this->start_at
-
-                ]);
-        }
+        $this->saveInvoiceNumber($invoice_type);
 
         $length = strlen($this->start_at);
 
@@ -75,9 +72,50 @@ class InvoiceNumberGeneratorService
 
     }
 
+    public function getNextInvoiceNo($invoice_type)
+    {
+        $this->saveInvoiceNumber($invoice_type);
+        
+        return $this->invoice_no->next_id;
+    }
+
     public function setNextInvoiceNo()
     {
         $this->invoice_no->increment('next_id');
+    }
+    
+    private function saveInvoiceNumber($invoice_type)
+    {
+
+        $this->invoice_no = InvoiceNumber::query()
+                    ->where('type', $invoice_type)
+                    ->when($this->others != '', function($q) {
+                        $q->where('others', $this->others);
+                    })
+                    ->when($this->year != '', function($q) {
+                        $q->where('year', $this->year);
+                    })
+                    ->when($this->company_id != null, function($q) {
+                        $q->where('company_id', $this->company_id);
+                    })
+                    ->when($this->buyer_id != null, function($q) {
+                        $q->where('buyer_id', $this->buyer_id);
+                    })
+                    ->first();
+
+        if (!optional($this->invoice_no)->next_id) {
+
+            $this->invoice_no = InvoiceNumber::create([
+
+                    'type'          => $invoice_type,
+                    'year'          => $this->year,
+                    'others'        => $this->others,
+                    'buyer_id'      => $this->buyer_id,
+                    'company_id'    => $this->company_id,
+                    'next_id'       => $this->start_at
+
+                ]);
+        }
     }
 
 }
