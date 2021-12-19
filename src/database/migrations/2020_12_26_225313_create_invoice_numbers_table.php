@@ -18,6 +18,7 @@ class CreateInvoiceNumbersTable extends Migration
             $table->string('type');
             $table->string('year')->nullable();
             $table->unsignedBigInteger('company_id')->nullable();
+            $table->unsignedBigInteger('buyer_id')->nullable();
             $table->string('others')->nullable();
             $table->unsignedInteger('next_id')->default(1);
             $table->timestamps();
