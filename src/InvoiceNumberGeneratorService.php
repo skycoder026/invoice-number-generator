@@ -74,6 +74,11 @@ class InvoiceNumberGeneratorService
 
     public function getNextInvoiceNo($invoice_type)
     {
+        return $this->getNextInvoiceId($invoice_type);
+    }
+
+    public function getNextInvoiceId($invoice_type)
+    {
         $this->saveInvoiceNumber($invoice_type);
         
         return $this->invoice_no->next_id;
