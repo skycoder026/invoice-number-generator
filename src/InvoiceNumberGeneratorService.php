@@ -65,10 +65,18 @@ class InvoiceNumberGeneratorService
 
         $length = strlen($this->start_at);
 
-        return $this->prefix
+        $invoice_no = $this->prefix
             . ($this->year != '' ? ('-' . $this->year) : '')
             . ($this->company_id != null ? ('-' . $this->company_id) : '')
             . str_pad($this->invoice_no->next_id, $length, "0", STR_PAD_LEFT);
+
+
+        if($is_update) {
+
+            $this->invoice_no->increment('next_id');
+        }
+
+        return $invoice_no;
 
     }
 
