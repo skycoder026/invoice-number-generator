@@ -6,13 +6,13 @@ use Skycoder\InvoiceNumberGenerator\Models\InvoiceNumber;
 
 class InvoiceNumberGeneratorService
 {
-    private $year = '';
     private $invoice_no;
-    private $others = '';
-    private $prefix = 'inv';
-    private $buyer_id = null;
-    private $company_id = null;
-    private $start_at = 600000;
+    private $year           = '';
+    private $others         = '';
+    private $prefix         = 'inv';
+    private $buyer_id       = null;
+    private $company_id     = null;
+    private $start_at       = 600000;
 
 
     public function currentYear()
@@ -59,7 +59,7 @@ class InvoiceNumberGeneratorService
         return $this;
     }
 
-    public function getInvoiceNumber($invoice_type)
+    public function getInvoiceNumber($invoice_type, $is_update = false)
     {
         $this->saveInvoiceNumber($invoice_type);
 
@@ -80,11 +80,6 @@ class InvoiceNumberGeneratorService
 
     }
 
-    public function getNextInvoiceNo($invoice_type)
-    {
-        return $this->getNextInvoiceId($invoice_type);
-    }
-
     public function getNextInvoiceId($invoice_type)
     {
         $this->saveInvoiceNumber($invoice_type);
@@ -97,7 +92,7 @@ class InvoiceNumberGeneratorService
         $this->invoice_no->increment('next_id');
     }
     
-    private function saveInvoiceNumber($invoice_type)
+    public function saveInvoiceNumber($invoice_type)
     {
 
         $this->invoice_no = InvoiceNumber::query()
@@ -129,6 +124,9 @@ class InvoiceNumberGeneratorService
 
                 ]);
         }
+
+
+        return $this;
     }
 
 }
