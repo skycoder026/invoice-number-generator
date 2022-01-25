@@ -11,7 +11,7 @@ class InvoiceNumberGeneratorService
     private $others         = '';
     private $prefix         = 'inv';
     private $buyer_id       = null;
-    private $company_id     = null;
+    private $company_id     = '';
     private $start_at       = 600000;
 
 
@@ -66,8 +66,8 @@ class InvoiceNumberGeneratorService
         $length = strlen($this->start_at);
 
         $invoice_no = $this->prefix
-            . ($this->year != '' ? ('-' . $this->year) : '')
-            . ($this->company_id != null ? ('-' . $this->company_id) : '')
+            . $this->year
+            . $this->company_id
             . str_pad($this->invoice_no->next_id, $length, "0", STR_PAD_LEFT);
 
 
